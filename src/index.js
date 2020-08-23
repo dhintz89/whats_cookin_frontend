@@ -1,4 +1,4 @@
-const BASE_URL = "https://whats-cookin-api.herokuapp.com/"
+const BASE_URL = "https://whats-cookin-api.herokuapp.com"
 const USERS_URL = `${BASE_URL}/users`
 const SESSIONS_URL = `${BASE_URL}/sessions`
 const RECIPES_URL = `${BASE_URL}/recipes`
