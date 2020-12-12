@@ -1,4 +1,5 @@
-const BASE_URL = "https://whats-cookin-api.herokuapp.com" || "http://localhost:3000"
+const BASE_URL = "http://localhost:3000"
+// "https://whats-cookin-api.herokuapp.com" || 
 const USERS_URL = `${BASE_URL}/users`
 const SESSIONS_URL = `${BASE_URL}/sessions`
 const RECIPES_URL = `${BASE_URL}/recipes`
@@ -124,9 +125,10 @@ function displaySearchResults(search_results) {
     if(document.querySelector('.resultSection')) {
         document.querySelector('.resultSection').remove()
     }
-    let resultSection
-    let recipeList
-    let recipe_outer
+    let resultSection;
+    let recipeList;
+    let recipe_outer;
+    let recipe_inner;
 
     document.querySelector('.search').classList.add('sendToTop')
     resultSection = document.createElement('div')    // need to add control flow for existing element
@@ -136,9 +138,10 @@ function displaySearchResults(search_results) {
     for (let i=0; i< recipeList.length; i++) {
         recipe_outer = document.createElement('div')
         recipe_outer.classList.add("recipe_outer")
-        recipe_inner = recipe_outer.append('span')
+        recipe_inner = document.createElement('span')
         recipe_inner.classList.add("recipe_inner")
         recipe_inner.innerHTML = `<h3>${recipeList[i].title}</h3><p>Ready in ${recipeList[i].readyInMinutes} minutes</p><img src=https://spoonacular.com/recipeImages/${recipeList[i].id}-240x150.jpg alt=${recipeList[i].image}>`
+        recipe_outer.appendChild(recipe_inner)
         recipe_outer.addEventListener('click', () => {selectRecipe(recipeList[i].id)})
 
         resultSection.appendChild(recipe_outer)
