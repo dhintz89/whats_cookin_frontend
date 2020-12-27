@@ -1,10 +1,11 @@
-const BASE_URL = "https://whats-cookin-api.herokuapp.com"  // must change to "http://localhost:3000" for dev work
+const BASE_URL =  "http://localhost:3000"  // must change to "http://localhost:3000" for dev work
+// "https://whats-cookin-api.herokuapp.com"
 const USERS_URL = `${BASE_URL}/users`
 const SESSIONS_URL = `${BASE_URL}/sessions`
 const RECIPES_URL = `${BASE_URL}/recipes`
 const INGREDIENTS_URL = `${BASE_URL}/ingredients`
 const INSTRUCTIONS_URL = `${BASE_URL}/instructions`
-let currentUser = {}
+let currentUser = {};
 
 // ### Initial Router for persistent login ###
 if(localStorage.token) {
