@@ -1,10 +1,15 @@
-const BASE_URL = "https://whats-cookin-api.herokuapp.com" || "http://localhost:3000"
+const BASE_URL = "https://whats-cookin-api.herokuapp.com"  // must change to "http://localhost:3000" for dev work
 const USERS_URL = `${BASE_URL}/users`
 const SESSIONS_URL = `${BASE_URL}/sessions`
 const RECIPES_URL = `${BASE_URL}/recipes`
 const INGREDIENTS_URL = `${BASE_URL}/ingredients`
 const INSTRUCTIONS_URL = `${BASE_URL}/instructions`
 let currentUser = {}
+
+// ### Initial Router for persistent login ###
+if(localStorage.token) {
+    displaySearchPage();
+}
 
 // ### LOGIN PAGE ###
 
@@ -92,27 +97,29 @@ function submitCredentials(url, username, password, verifyPass, name, contactPre
 function displaySearchPage() {
     document.querySelector('.creds').classList.add('hidden')
     document.querySelector('.search').classList.remove('hidden')
-    document.querySelector('#search_btn').addEventListener('click', () => {
-        let keyword = document.querySelector('.search .recipe_search').value;
-        console.log(keyword)
-        fetch(`${RECIPES_URL}/search`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Authorization": `Bearer ${window.localStorage.getItem("token")}`
-            },
-            mode: "cors",
-            credentials: "include",
-            body: JSON.stringify({keyword: keyword})
-        })
-        .then(resp => resp.json())
-        .then(datalist => displaySearchResults(datalist))
-        .catch(function(error) {
-            alert("You must log in to perform that action");
-            backToLogin()
-            console.log(error)
-        });
+};
+
+const recSearch = () => {
+// document.querySelector('#search_btn').addEventListener('submit', () => {
+    let keyword = document.querySelector('.search .recipe_search').value;
+    console.log(keyword)
+    fetch(`${RECIPES_URL}/search`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Bearer ${window.localStorage.getItem("token")}`
+        },
+        mode: "cors",
+        credentials: "include",
+        body: JSON.stringify({keyword: keyword})
+    })
+    .then(resp => resp.json())
+    .then(datalist => displaySearchResults(datalist))
+    .catch(function(error) {
+        alert("You must log in to perform that action");
+        backToLogin()
+        console.log(error)
     });
 };
 
@@ -129,6 +136,7 @@ function displaySearchResults(search_results) {
     let recipe_outer;
     let recipe_inner;
 
+    document.querySelector('.search_title').classList.add('hidden')
     document.querySelector('.search').classList.add('sendToTop')
     resultSection = document.createElement('div')    // need to add control flow for existing element
     resultSection.classList.add('resultSection')
