@@ -1,5 +1,4 @@
-const BASE_URL =  "http://localhost:3000"  // must change to "http://localhost:3000" for dev work
-// "https://whats-cookin-api.herokuapp.com"
+const BASE_URL =  "https://whats-cookin-api.herokuapp.com"  // must change to "http://localhost:3000" for dev work
 const USERS_URL = `${BASE_URL}/users`
 const SESSIONS_URL = `${BASE_URL}/sessions`
 const RECIPES_URL = `${BASE_URL}/recipes`
@@ -277,7 +276,25 @@ function sendShopList() {
     // returns the ids of each selected recipe-ingredient -> need to POST back to backend
     let selectedList = Array.prototype.slice.call(document.querySelectorAll('#ingredientSection li')).filter(line => line.querySelector('input').checked)
     document.querySelectorAll('#ingredientSection li input').forEach(box => box.checked = false)
-    return selectedList.map(line => line.querySelector('input').name)
+    const list = selectedList.map(line => line.outerText);
+    const recipe = document.querySelector('.recipeDisplay > h1').innerText
+    console.log(list)
+    fetch(`${RECIPES_URL}/send_shoplist`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Bearer ${window.localStorage.getItem("token")}`
+        },
+        mode: 'cors',
+        credentials: "include",
+        body: JSON.stringify({recipe: recipe, shoplist: list})
+    })
+    .then(alert("Shopping List Successfully Delivered"))
+    .catch(function(error) {
+        alert("Shopping List Could Not Be Delivered")
+        console.log(error)
+    })
 }
 
 function backToLogin() {
